@@ -1,0 +1,60 @@
+{{ template "header.tmpl" .}}
+
+  <div class="col-md-4 float-left">
+    <div class="bs4-component">
+      <div class="card border-success mb-3" >
+        <div class="card-header text-success"><legend class="text-success">{{.program.Name}} {{.progam.ID}}
+          <img class="float-right" src="{{.program.Logo}}" style="display: block; max-width: 40px;">
+        </legend>
+      </div>
+        <div class="card-body">
+            <fieldset>
+              <div class="form-group">
+                <label for="name">URL</label>
+                <div class="form-group">
+                  <div class="input-group mb-3">
+                    <input class="form-control is-invalid" id="name" name="name" disabled="" value={{.program.URL}}></input>
+                  </div>
+                </div>
+              </div>
+              <div class="form-group">
+                <label for="scope">Scope</label>
+                <select multiple="" class="form-control" id="scope" name="scope" >
+                  {{range .program.Targets}}
+                  <option>{{.Name}}</option>
+                  {{end}}
+                </select>
+              </div>
+              <div class="form-group">
+                <label for="threads">Default Theads</label>
+                <input type="number" class="form-control is-invalid" id="threads" name="threads" disabled="" value="{{.program.Threads}}"></input>
+              </div>
+              <a role="button" href="/edit/{{.progam.ID}}" class="btn btn-outline-success float-right disabled" aria-disabled="true" >Edit</a>
+            </fieldset>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  {{ template "SubdomainScan" .}}
+
+  {{ template "HttProbe" .}}
+
+  {{ template "Aquatone" .}}
+
+  {{ template "SubJack" .}}
+
+  {{ template "Dirsearch" .}}
+
+<script>
+$('#url').change(function(){
+  if($('#name').val() == '') {
+    $url = $('#url').val();
+    $name = $url.split("/");
+    $('#name').val($name[$name.length -1].toUpperCase());
+  }
+})
+
+</script>
+
+{{ template "footer.tmpl" .}}
