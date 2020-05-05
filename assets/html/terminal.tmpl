@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html>
+<head>
+<script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
+
+<script src="/js/ansi_up.js" type="text/javascript"></script>
+<script src="/js/termynal.js" data-termynal-container="#termynal"></script>
+<style type="text/css" media="screen">
+    @import url("/assets/css/termynal.css");
+</style>
+
+</head>
+<body id="termynal" data-termynal>
+    
+</body>
+</html>
+
+
+<script>
+
+var txt  = "{{.raw}}"
+
+var ansi_up = new AnsiUp;
+
+var html = ansi_up.ansi_to_html(txt);
+
+var cdiv = document.getElementById("termynal");
+
+cdiv.innerHTML = html;
+
+$('span').attr("data-ty", "data-ty");
+
+</script>
+
+
+</script>

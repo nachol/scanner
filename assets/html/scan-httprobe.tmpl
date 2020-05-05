@@ -6,15 +6,21 @@
     <div class="card border-success mb-3">
       <div class="card-header text-success">
         <legend class="float-left">{{$name}}
-          <a class="btn btn-sm btn-success float-right">
+          <a class="btn btn-sm btn-success float-right" id="run{{$name}}">
             RUN
           </a>
         </legend>
-        <p class="text-muted">httprobe -p http:81 -p https:8443 -p http:8080 -p http:8000
-          <a class="float-right" data-toggle="collapse" href="#{{$name}}" role="button" aria-expanded="false"
-            aria-controls="{{$name}}">
-            <svg class="bi bi-aspect-ratio text-secondary" width="1em" height="1em" viewBox="0 0 16 16" fill="currentColor"
-              xmlns="http://www.w3.org/2000/svg">
+        <p class="text-muted">
+          <label for="type" style="margin-right: 5px;">Scan Type</label>
+          <select id='type' name="type">
+            <option value="default">Default</option>
+            <option value="large">Large</option>
+            <option value="xlarge">xLarge</option>
+        </select>
+          <a class="float-right" data-toggle="collapse" href="#collapse{{$name}}" role="button" aria-expanded="false"
+            aria-controls="collapse{{$name}}">
+            <svg class="bi bi-aspect-ratio text-secondary" width="1em" height="1em" viewBox="0 0 16 16"
+              fill="currentColor" xmlns="http://www.w3.org/2000/svg">
               <path fill-rule="evenodd"
                 d="M0 3.5A1.5 1.5 0 011.5 2h13A1.5 1.5 0 0116 3.5v9a1.5 1.5 0 01-1.5 1.5h-13A1.5 1.5 0 010 12.5v-9zM1.5 3a.5.5 0 00-.5.5v9a.5.5 0 00.5.5h13a.5.5 0 00.5-.5v-9a.5.5 0 00-.5-.5h-13z"
                 clip-rule="evenodd" />
@@ -26,12 +32,87 @@
         </p>
 
       </div>
-      <div class="card-body collapse" id="{{$name}}">
-              <label for="scope">Output:</label>
-              <textarea class="form-control is-invalid" id="scope" name="scope" rows="5"></textarea>            
+      <div class="card-body collapse" id="collapse{{$name}}">
+        <label for="{{$name}}result">Output:</label>
+        <select multiple="" class="form-control" id="{{$name}}result" size="25">
+          {{range .program.Scans}}
+          {{if eq .Name $name}}
+          {{range .Result.result}}
+          <option>{{.}}</option>
+          {{end}}
+          {{end}}
+          {{end}}
+        </select>
       </div>
     </div>
   </div>
 </div>
 
+<script>
+  $('#run{{$name}}').click(function name(params) {
+
+    var $scope
+    if ($('#SubdomainScanresult').val().length != 0){
+      $scope = $('#SubdomainScanresult').val();
+    }else if ($('#scope').val().length != 0){
+      Swal.fire({
+        title: 'Are you sure?',
+        text: "Your Targets wasnt selected from Subdomain Module. I'm using your Program Scope selection.",
+        icon: 'warning',
+        showCancelButton: true,
+        confirmButtonColor: '#3085d6',
+        cancelButtonColor: '#d33',
+        confirmButtonText: 'Yes, continue!'
+      }).then((result) => {
+        if (!result.value) {
+          return;
+        }
+      })
+      $scope = $('#scope').val();
+
+    }else{
+      Swal.fire({
+        icon: 'error',
+        title: 'Oops...',
+        text: 'Please select the Targets from the SubdomainScan module or from the program Scope',
+      }) 
+    }
+
+    Swal.fire({
+      title: 'Running!',
+      timerProgressBar: true,
+      onBeforeOpen: () => {
+        Swal.showLoading()
+      },
+    })
+    $.ajax({
+      url: "/runScan",
+      type: "post", //send it through get method
+      data: {
+        scan: "{{$name}}",
+        scope: $scope,
+        programID: "{{.program.Name}}",
+        options: {'type': $('#type').val()}
+      },
+      success: function (response) {
+        Swal.fire({
+          icon: 'success',
+          title: 'Work Completed',
+          showConfirmButton: true,
+          onClose: () => {
+            location.reload();
+          }
+        })
+
+      },
+      error: function (xhr) {
+        Swal.fire({
+          icon: 'error',
+          title: 'Oops...',
+          text: 'Something went wrong! If you submited tons of subdomains it may continue runnning in backgroud.',
+        })
+      }
+    });
+  })
+</script>
 {{end}}

@@ -7,13 +7,16 @@
     <div class="card border-success mb-3">
       <div class="card-header text-success">
         <legend class="float-left">{{$name}}
-          <a class="btn btn-sm btn-success float-right">
+          <a class="btn btn-sm btn-success float-right" id="run{{$name}}">
             RUN
           </a>
         </legend>
-        <p class="text-muted">sublist3r, subfinder
-          <a class="float-right" data-toggle="collapse" href="#{{$name}}" role="button" aria-expanded="false"
-            aria-controls="{{$name}}">
+        <p class="text-muted">sublist3r [WORKING], subfinder [NOT IMPLEMENTED]
+         
+          
+          <!-- Toogle icon -->
+          <a class="float-right" data-toggle="collapse" href="#collapse{{$name}}" role="button" aria-expanded="false"
+            aria-controls="collapse{{$name}}">
             <svg class="bi bi-aspect-ratio text-secondary" width="1em" height="1em" viewBox="0 0 16 16" fill="currentColor"
               xmlns="http://www.w3.org/2000/svg">
               <path fill-rule="evenodd"
@@ -24,15 +27,68 @@
                 clip-rule="evenodd" />
             </svg>
           </a>
+           <!-- Terminal icon -->
+           <a class="float-right text-success" href="/terminal/{{.program.Name}}/{{$name}}" target="_blank" role="button" style="margin-right: 20px;">
+            <svg class="bi bi-terminal-fill" width="1em" height="1em" viewBox="0 0 16 16" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
+              <path fill-rule="evenodd" d="M0 3a2 2 0 012-2h12a2 2 0 012 2v10a2 2 0 01-2 2H2a2 2 0 01-2-2V3zm9.5 5.5h-3a.5.5 0 000 1h3a.5.5 0 000-1zm-6.354-.354L4.793 6.5 3.146 4.854a.5.5 0 11.708-.708l2 2a.5.5 0 010 .708l-2 2a.5.5 0 01-.708-.708z" clip-rule="evenodd"/>
+            </svg>
+          </a>
         </p>
 
       </div>
-      <div class="card-body collapse" id="{{$name}}">
-              <label for="scope">Output:</label>
-              <textarea class="form-control is-invalid" id="scope" name="scope" rows="5"></textarea>            
+      <div class="card-body collapse" id="collapse{{$name}}">
+              <label for="{{$name}}result">Output:</label>
+              <select multiple="" class="form-control" id="{{$name}}result" size="25">
+                {{range .program.Scans}}
+                  {{if eq .Name $name}}
+                  {{range .Result.result}}
+                <option>{{.}}</option>
+                {{end}}
+                {{end}}
+              {{end}}
+              </select>
       </div>
     </div>
   </div>
 </div>
+
+
+<script>
+  $('#run{{$name}}').click(function name(params) {
+    Swal.fire({
+    title: 'Running!',
+    timerProgressBar: true,
+    onBeforeOpen: () => {
+      Swal.showLoading()
+    },
+  })
+    $.ajax({
+      url: "/runScan",
+      type: "post", //send it through get method
+      data: {
+        scan: "{{$name}}",
+        scope: $('#scope').val(),
+        programID : "{{.program.Name}}"
+      },
+      success: function (response) {
+        Swal.fire({
+          icon: 'success',
+          title: 'Work Completed',
+          showConfirmButton: true,
+          onClose: () => {
+            location.reload();
+          }
+        })
+      },
+      error: function (xhr) {
+        Swal.fire({
+          icon: 'error',
+          title: 'Oops...',
+          text: 'Something went wrong!',
+        })
+      }
+    });
+  })
+</script>
 
 {{end}}

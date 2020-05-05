@@ -1,20 +1,21 @@
 {{ template "header.tmpl" .}}
-
 <div class="row">
-{{range .works}}
+{{range .programs}}
   <div class="col-lg-4">
     <div class="bs4-component">
     <div class="card border-success mb-3" style="max-width: 20rem;">
-        <div class="card-header text-success"><b>ID: </b># {{.ID}}</div>
+        
         <div class="card-body">
-          <h4 class="card-title text-success">{{.Name}}</h4>
-          <p class="text-muted">{{.URL}}</p>
+          <h4 class="card-title text-success">{{.Name}}
+          <img class="float-right" src="{{.Logo}}" style="display: block; max-width: 40px; border-radius: 1rem;">
+
+          </h4>
           <p class="card-text">
           </p>
-          <a role="button" class="btn btn-outline-danger float-left" href="/delete/{{.ID}}">
+          <a role="button" class="btn btn-outline-danger float-left" href="/delete/{{.Name}}">
           Delete
           </a>
-          <a role="button" class="btn btn-outline-success float-right" href="/view/{{.ID}}">
+          <a role="button" class="btn btn-outline-success float-right" href="/view/{{.Name}}">
           View
           </a>
         </div>
@@ -29,7 +30,7 @@
     <path fill-rule="evenodd" d="M8 3.5a.5.5 0 01.5.5v4a.5.5 0 01-.5.5H4a.5.5 0 010-1h3.5V4a.5.5 0 01.5-.5z" clip-rule="evenodd"/>
     <path fill-rule="evenodd" d="M7.5 8a.5.5 0 01.5-.5h4a.5.5 0 010 1H8.5V12a.5.5 0 01-1 0V8z" clip-rule="evenodd"/>
   </svg>
- New Work
+ New Program
 </a>
 
 

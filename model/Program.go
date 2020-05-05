@@ -1,6 +1,7 @@
 package model
 
 import (
+	scan "../scan"
 	"time"
 )
 
@@ -8,15 +9,18 @@ import (
 Program : Program Of H1
 */
 type Program struct {
-	ID        int
-	Name      string
-	Targets   []Target `gorm:"foreignkey:ProgramId"`
-	Threads   int
-	URL       string
-	Logo      string
-	CreatedAt time.Time
-	UpdatedAt time.Time
-	DeletedAt *time.Time
+	Name      string      `bson:"name"`
+	Targets   []Target    `bson:"targets"`
+	Threads   int         `bson:"threads"`
+	URL       string      `bson:"url"`
+	Logo      string      `bson:"logo"`
+	CreatedAt time.Time   `bson:"created"`
+	Domains   []Domain    `bson:"domains"`
+	Scans     []scan.Scan `bson:"Scans"`
+}
+
+type Domain struct {
+	Name string `bson:"name"`
 }
 
 func (p *Program) getTargets() []Target {
