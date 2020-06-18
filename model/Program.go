@@ -1,7 +1,8 @@
 package model
 
 import (
-	scan "../scan"
+	"github.com/nachol/scanner/scan"
+	// scan "scanner/scan"
 	"time"
 )
 
