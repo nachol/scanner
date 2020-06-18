@@ -18,29 +18,7 @@ import (
 var CollectionProgram *mongo.Collection
 
 func Index(c *gin.Context) {
-	var results []*model.Program
-
-	cur, err := CollectionProgram.Find(context.TODO(), bson.D{{}})
-	if err != nil {
-		log.Fatal(err)
-	}
-
-	for cur.Next(context.TODO()) {
-
-		// create a value into which the single document can be decoded
-		var elem model.Program
-		err := cur.Decode(&elem)
-		if err != nil {
-			log.Fatal(err)
-		}
-
-		results = append(results, &elem)
-	}
-
-	if err := cur.Err(); err != nil {
-		log.Fatal(err)
-	}
-
+	results := model.GetPrograms()
 	c.HTML(http.StatusOK, "index.tmpl", gin.H{
 		"title":    "Index",
 		"programs": results,
@@ -72,12 +50,7 @@ func CreateProgram(c *gin.Context) {
 	}
 	w.CreatedAt = time.Now()
 
-	// b, err := json.Marshal(&w)
-	// if err != nil {
-	// 	return
-	// }
-
-	insertResult, err := CollectionProgram.InsertOne(context.TODO(), w)
+	insertResult, err := model.CreateProgram(&w)
 	if err != nil {
 		log.Fatal(err)
 	}

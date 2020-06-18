@@ -28,7 +28,8 @@ func main() {
 	}
 
 	collectionProgram := c.GetCollection()
-	handlers.CollectionProgram = collectionProgram
+	handlers.CollectionProgram = collectionProgram //----> Migrandolo a Model
+	model.CollectionProgram = collectionProgram
 
 	/*
 		Index Showing Programs

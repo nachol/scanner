@@ -37,8 +37,12 @@ for _, models := range []interface{}{
 - Auto import the Program Scope
 - Fix Bugs
 - Fix MORE BUGS
+- Document the code
+- Fix performance issues
+- Refactorize the code.
 
 # Testing programs
 
 https://hackerone.com/tron_btfs
+
 https://hackerone.com/evernote
