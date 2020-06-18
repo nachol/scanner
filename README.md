@@ -1,5 +1,15 @@
 # scanner for H1 Programs
 
+## Dependencies.
+
+Holy shit, this is long.
+
+1. Golang
+ -> Gin Framework
+2. MongoDB
+3. Python3
+ -> Check the requeriments.txt under tools/[TOOLNAME]/
+
 ## Define your own modules:
 
 1. Add the scan logic in `scan/` you can user some of them as example
@@ -19,8 +29,14 @@ for _, models := range []interface{}{
 
 
 # TODO
-Add Raw tool output to scan
-crunchbase
+
+- Add Raw tool output to scan [DONE]
+- crunchbase
+- Add Tools
+- Make a fucking docker image to handle all the dependencies.
+- Auto import the Program Scope
+- Fix Bugs
+- Fix MORE BUGS
 
 # Testing programs
 
