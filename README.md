@@ -6,7 +6,7 @@ Holy shit, this is long.
 
 1. Golang
  -> Gin Framework
-2. MongoDB
+2. MongoDB ( `docker run -p 27017:27017 mongo:latest` will do its work for testing. )
 3. Python3
  -> Check the requeriments.txt under tools/[TOOLNAME]/
 
