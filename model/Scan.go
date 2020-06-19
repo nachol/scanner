@@ -1,7 +1,7 @@
-package scan
+package model
 
 import (
-// "time"
+	"github.com/gin-gonic/gin"
 )
 
 /*
@@ -37,4 +37,13 @@ func (s *Scan) Run(args ...interface{}) (interface{}, error) {
 	s.Result = result.(interface{}).(map[string]interface{})
 	s.Raw = raw
 	return result, nil
+}
+
+func CreateBindScan(c *gin.Context, program *Program) (scan *Scan, err error) {
+	c.Bind(&scan)
+	options := c.PostFormMap("options")
+	scan.Options = options
+	scan.Threads = program.Threads
+	scan.LoadModes()
+	return scan, nil
 }

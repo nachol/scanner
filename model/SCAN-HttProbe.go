@@ -1,4 +1,4 @@
-package scan
+package model
 
 /*
 Adaptation of https://github.com/tomnomnom/httprobe
@@ -12,10 +12,12 @@ import (
 	"fmt"
 	"io"
 	"io/ioutil"
+
 	// "log"
 	"net"
 	"net/http"
 	"os"
+
 	// "os/exec"
 	// "strconv"
 	"strings"

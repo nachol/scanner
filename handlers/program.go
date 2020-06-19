@@ -27,7 +27,7 @@ func Index(c *gin.Context) {
 
 func NewProgram(c *gin.Context) {
 	c.HTML(http.StatusOK, "new.tmpl", gin.H{
-		"title": "New Work",
+		"title": "New Program",
 	})
 
 }
@@ -52,7 +52,8 @@ func CreateProgram(c *gin.Context) {
 
 	insertResult, err := model.CreateProgram(&w)
 	if err != nil {
-		log.Fatal(err)
+		c.JSON(400, gin.H{"error": err.Error()})
+		return
 	}
 
 	log.Printf("Success: %s\n", insertResult)
@@ -63,12 +64,11 @@ func CreateProgram(c *gin.Context) {
 func DeleteProgram(c *gin.Context) {
 
 	id := c.Param("id")
-	filter := bson.D{{"name", id}}
-	_, err := CollectionProgram.DeleteOne(context.TODO(), filter)
+	err := model.DeleteProgram(id)
 	if err != nil {
-		log.Fatal(err)
+		c.JSON(400, gin.H{"error": err.Error()})
+		return
 	}
-
 	c.Redirect(302, "/index")
 }
 
@@ -79,7 +79,8 @@ func ViewProgram(c *gin.Context) {
 	filter := bson.D{{"name", id}}
 	err := CollectionProgram.FindOne(context.TODO(), filter).Decode(&program)
 	if err != nil {
-		log.Fatal(err)
+		c.JSON(400, gin.H{"error": err.Error()})
+		return
 	}
 
 	c.HTML(http.StatusOK, "view.tmpl", gin.H{

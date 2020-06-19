@@ -34,7 +34,7 @@ func main() {
 	/*
 		Index Showing Programs
 	*/
-	r.GET("/", handlers.Index)
+	r.GET("/index", handlers.Index)
 
 	/*
 		Show the form to create a program
