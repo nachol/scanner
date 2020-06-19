@@ -1,29 +1,37 @@
 # Dockerfile References: https://docs.docker.com/engine/reference/builder/
 
-# Start from the latest golang base image
-FROM golang:latest
+# Start from golang:1.12-alpine base image
+FROM golang:1.12-alpine
+
+# The latest alpine images don't have some tools like (`git` and `bash`).
+# Adding git, bash and openssh to the image
+RUN apk update && apk upgrade && \
+    apk add --no-cache bash git openssh \
+    python3
 
 # Add Maintainer Info
 LABEL maintainer="Ignacio Lizaso <nacho.lizaso@hotmail.com>"
 
+
 # Set the Current Working Directory inside the container
-WORKDIR $GOPATH/src/github.com/nachol/scanner
+WORKDIR /app
 
 # Copy go mod and sum files
 COPY go.mod go.sum ./
 
-# Download all dependencies. Dependencies will be cached if the go.mod and go.sum files are not changed
+# Download all dependancies. Dependencies will be cached if the go.mod and go.sum files are not changed
 RUN go mod download
 
 # Copy the source from the current directory to the Working Directory inside the container
 COPY . .
 
 # Build the Go app
-# RUN go build -o main .
+RUN go build -o main .
+
+RUN python3 -m pip install -r ./requirements.txt
 
 # Expose port 8080 to the outside world
-EXPOSE 8080
+EXPOSE 8000
 
-# Command to run the executable
-# CMD ["./main"]
-CMD ["go","run","./main.go"]
+# Run the executable
+CMD ["./main"]
