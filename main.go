@@ -21,14 +21,14 @@ func main() {
 	r.StaticFile("/js/ansi_up.js.map", "./assets/js/ansi_up.js.map")
 	r.StaticFile("/js/termynal.js", "./assets/js/termynal.js")
 
-	c, err := model.NewConnection("mongodb://mongo:27017")
+	c, err := model.NewConnection("mongodb://192.168.1.5:27017")
 
 	if err != nil {
 		log.Fatalln("Error connecting to DB")
 	}
 
 	collectionProgram := c.GetCollection()
-	handlers.CollectionProgram = collectionProgram //----> Migrandolo a Model
+
 	model.CollectionProgram = collectionProgram
 
 	/*

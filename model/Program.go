@@ -4,10 +4,10 @@ import (
 	"context"
 	"log"
 
+	"github.com/nachol/scanner/utils"
 	"go.mongodb.org/mongo-driver/bson"
 	"go.mongodb.org/mongo-driver/mongo"
 
-	// scan "scanner/scan"
 	"time"
 )
 
@@ -38,6 +38,27 @@ func (p *Program) getTargets() []Target {
 }
 
 func (p *Program) UpdateScans(scan *Scan) (res *mongo.UpdateResult, e error) {
+	for id, s := range p.Scans {
+		if s.Name == scan.Name {
+			tmp := append(scan.Result, s.Result...)
+			p.Scans[id].SetResult(utils.Unique(tmp))
+
+			update := bson.D{
+				{"$set", bson.D{
+					{"Scans", p.Scans},
+				}},
+			}
+
+			filter := bson.D{{"name", p.Name}}
+			res, err := CollectionProgram.UpdateOne(context.TODO(), filter, update)
+			if err != nil {
+				return nil, err
+			}
+			return res, nil
+
+		}
+	}
+
 	p.Scans = append(p.Scans, *scan)
 	update := bson.D{
 		{"$set", bson.D{

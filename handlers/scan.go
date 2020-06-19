@@ -1,13 +1,11 @@
 package handlers
 
 import (
-	"context"
 	"log"
 	"net/http"
 
 	"github.com/gin-gonic/gin"
 	"github.com/nachol/scanner/model"
-	"go.mongodb.org/mongo-driver/bson"
 )
 
 func RunScan(c *gin.Context) {
@@ -47,11 +45,7 @@ func RunScan(c *gin.Context) {
 func ViewTerminal(c *gin.Context) {
 	id := c.Param("id")
 	// scanName := c.Param("scanName")
-
-	var program model.Program
-
-	filter := bson.D{{"name", id}}
-	err := CollectionProgram.FindOne(context.TODO(), filter).Decode(&program)
+	program, err := model.GetProgramById(id)
 
 	if err != nil {
 		log.Fatal(err)

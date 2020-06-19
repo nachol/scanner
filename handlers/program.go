@@ -1,7 +1,6 @@
 package handlers
 
 import (
-	"context"
 	"log"
 	"net/http"
 	"strconv"
@@ -11,11 +10,7 @@ import (
 	"github.com/gin-gonic/gin"
 	"github.com/nachol/scanner/model"
 	"github.com/nachol/scanner/utils"
-	"go.mongodb.org/mongo-driver/bson"
-	"go.mongodb.org/mongo-driver/mongo"
 )
-
-var CollectionProgram *mongo.Collection
 
 func Index(c *gin.Context) {
 	results := model.GetPrograms()
@@ -74,10 +69,8 @@ func DeleteProgram(c *gin.Context) {
 
 func ViewProgram(c *gin.Context) {
 	id := c.Param("id")
-	var program model.Program
 
-	filter := bson.D{{"name", id}}
-	err := CollectionProgram.FindOne(context.TODO(), filter).Decode(&program)
+	program, err := model.GetProgramById(id)
 	if err != nil {
 		c.JSON(400, gin.H{"error": err.Error()})
 		return

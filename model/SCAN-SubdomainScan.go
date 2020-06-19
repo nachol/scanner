@@ -8,14 +8,15 @@ import (
 	"os"
 	"os/exec"
 	"strconv"
+
+	"github.com/nachol/scanner/utils"
 )
 
 var SubdomainScanresult []string
 var SubdomainScanraw string
 
-func SubdomainScan(s *Scan, args ...interface{}) (interface{}, string, error) {
+func SubdomainScan(s *Scan, args ...interface{}) ([]string, string, error) {
 
-	//./sublist3r.py -d koho.ca -o ~/Documents/koho.ca/sublister
 	for _, domain := range s.Scope {
 		log.Println(domain)
 		output := "/tmp/sublist3r.txt"
@@ -42,9 +43,7 @@ func SubdomainScan(s *Scan, args ...interface{}) (interface{}, string, error) {
 		SubdomainScanraw = SubdomainScanraw + "\n" + out.String()
 	}
 	log.Println(SubdomainScanraw)
-	return map[string]interface{}{
-		"result": Unique(SubdomainScanresult),
-	}, SubdomainScanraw, nil
+	return utils.Unique(SubdomainScanresult), SubdomainScanraw, nil
 
 }
 

@@ -37,7 +37,7 @@
         <select multiple="" class="form-control" id="{{$name}}result" size="25">
           {{range .program.Scans}}
           {{if eq .Name $name}}
-          {{range .Result.result}}
+          {{range .Result}}
           <option>{{.}}</option>
           {{end}}
           {{end}}

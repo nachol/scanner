@@ -25,9 +25,7 @@ import (
 	"time"
 )
 
-func HttProbe(s *Scan, args ...interface{}) (interface{}, string, error) {
-	// var result []string
-	// var raw string
+func HttProbe(s *Scan, args ...interface{}) ([]string, string, error) {
 
 	config := map[string]interface{}{
 		"concurrency": s.Threads,
@@ -42,9 +40,7 @@ func HttProbe(s *Scan, args ...interface{}) (interface{}, string, error) {
 
 	res := run(config)
 
-	return map[string]interface{}{
-		"result": res,
-	}, "", nil
+	return res, "", nil
 }
 
 func run(params interface{}) []string {
