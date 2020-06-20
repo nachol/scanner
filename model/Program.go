@@ -43,6 +43,8 @@ func (p *Program) UpdateScans(scan *Scan) (res *mongo.UpdateResult, e error) {
 			tmp := append(scan.Result, s.Result...)
 			p.Scans[id].SetResult(utils.Unique(tmp))
 
+			p.Scans[id].SetRaw(p.Scans[id].Raw + "\n" + s.Raw)
+
 			update := bson.D{
 				{"$set", bson.D{
 					{"Scans", p.Scans},

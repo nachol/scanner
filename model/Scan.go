@@ -22,6 +22,7 @@ func (s *Scan) LoadModes() {
 	var funcMap = map[string]interface{}{
 		"SubdomainScan": SubdomainScan,
 		"HttProbe":      HttProbe,
+		"DirsearchScan": DirsearchScan,
 	}
 	s.Modes = funcMap
 }
@@ -34,6 +35,11 @@ func (s *Scan) GetName() string {
 func (s *Scan) SetResult(res []string) {
 
 	s.Result = res
+}
+
+func (s *Scan) SetRaw(res string) {
+
+	s.Raw = res
 }
 
 func (s *Scan) Run(args ...interface{}) (interface{}, error) {

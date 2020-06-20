@@ -30,16 +30,17 @@ for _, models := range []interface{}{
 
 # TODO
 
-- Add Raw tool output to scan [DONE]
+- Add Raw tool output to scan ✔️
 - crunchbase
 - Add Tools
-- Make a fucking docker image to handle all the dependencies.
+- Make a fucking docker image to handle all the dependencies. ✔️
 - Auto import the Program Scope
-- Fix Bugs
+- Fix Bugs ✔️
 - Fix MORE BUGS
 - Document the code
 - Fix performance issues
-- Refactorize the code.
+- Refactorize the code. ✔️
+- Add the edit program and clean tool output funcionality
 
 # Testing programs
 

@@ -44,13 +44,23 @@ func RunScan(c *gin.Context) {
 
 func ViewTerminal(c *gin.Context) {
 	id := c.Param("id")
+	scanName := c.Param("scanName")
+
 	// scanName := c.Param("scanName")
 	program, err := model.GetProgramById(id)
+
+	var raw string
+	for key, val := range program.Scans {
+		if val.Name == scanName {
+			raw = program.Scans[key].Raw
+			break
+		}
+	}
 
 	if err != nil {
 		log.Fatal(err)
 	}
 	c.HTML(http.StatusOK, "terminal.tmpl", gin.H{
-		"raw": program.Scans[0].Raw,
+		"raw": raw,
 	})
 }
